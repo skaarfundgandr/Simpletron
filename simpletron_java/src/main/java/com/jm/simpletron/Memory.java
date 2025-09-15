@@ -25,11 +25,11 @@ public class Memory {
         return instance;
     }
 
-    public void store(String data, short index) {
+    public void store(String data, int index) {
         memStrings[index] = data;
     }
 
-    public String read(short index) {
+    public String read(int index) {
         return memStrings[index];
     }
 
