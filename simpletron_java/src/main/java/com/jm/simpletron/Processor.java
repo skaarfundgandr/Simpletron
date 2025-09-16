@@ -1,8 +1,6 @@
 package com.jm.simpletron;
 
 import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 class Instructions {
     public static final int 
