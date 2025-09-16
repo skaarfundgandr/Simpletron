@@ -14,7 +14,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.5.1</version>
                 <configuration>
-                    <mainClass>com.jm.simpletron.Main</mainClass>
+                    <mainClass>com.jm.simpletron.Simpletron</mainClass>
                 </configuration>
             </plugin>
         </plugins>

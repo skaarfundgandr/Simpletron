@@ -8,7 +8,7 @@ public class Memory {
 
     private Memory() {
         for (int i = 0; i < MEMORY_SIZE; i++) {
-            memStrings[i] = new String("+0000");
+            memStrings[i] = "0000";
         }
     }
 
@@ -25,16 +25,24 @@ public class Memory {
         return instance;
     }
 
-    public void store(String data, int index) {
+    public void addItem(String data, int index) {
         memStrings[index] = data;
     }
 
-    public String read(int index) {
+    public String readItem(int index) {
         return memStrings[index];
     }
 
+    public void dump() {
+        try {
+            System.out.println(this.toString());
+        } catch (RuntimeException e) {
+            System.err.println("Failed to dump memory: " + e.getMessage());
+        }
+    }
+
     @Override
-    public String toString() {
+    public String toString() throws RuntimeException {
         String out;
 
         out = "Memory:\n";
@@ -53,8 +61,16 @@ public class Memory {
             if ((i % 10) == 0) {
                 out += String.format("%02d\t", i);
             }
+            
+            if (Integer.parseInt(readItem(i)) >= 0) {
+                out += "+";
+            } else if (Integer.parseInt(readItem(i)) < 0 ) {
+                out += "-";
+            } else {
+                throw new RuntimeException("Invalid memory entry at index " + i);
+            }
 
-            out += (memStrings[i] + "\t");
+            out += (readItem(i) + "\t");
 
             if ((i % 10) == 9) {
                 out += "\n";
@@ -62,9 +78,5 @@ public class Memory {
         }
 
         return out;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(Memory.getInstance());
     }
 }
