@@ -62,9 +62,9 @@ public class Memory {
                 out += String.format("%02d\t", i);
             }
             
-            if (Integer.parseInt(readItem(i)) >= 0) {
+            if (Integer.parseInt(readItem(i).trim()) >= 0) {
                 out += "+";
-            } else if (Integer.parseInt(readItem(i)) < 0 ) {
+            } else if (Integer.parseInt(readItem(i).trim()) < 0 ) {
                 out += "-";
             } else {
                 throw new RuntimeException("Invalid memory entry at index " + i);

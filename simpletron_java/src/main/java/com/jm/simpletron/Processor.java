@@ -30,12 +30,12 @@ public class Processor {
             case Instructions.READ:
                 String instruction = scan.nextLine();
 
-                mem.addItem(instruction, operand);
+                mem.addItem(String.format("%04d", Integer.parseInt(instruction)), operand);
 
                 ProgramCounter.increment();
                 break;
             case Instructions.WRITE:
-                System.out.println(mem.readItem(operand));
+                System.out.println(mem.readItem(operand).trim());
 
                 ProgramCounter.increment();
                 break;
@@ -45,7 +45,7 @@ public class Processor {
                 ProgramCounter.increment();
                 break;
             case Instructions.STORE:
-                mem.addItem(String.format("%4d", accumulator), operand);
+                mem.addItem(String.format("%04d", accumulator), operand);
 
                 ProgramCounter.increment();
                 break;
@@ -57,45 +57,31 @@ public class Processor {
             case Instructions.ADDM:
                 value = Integer.parseInt(mem.readItem(operand));
 
-                value += accumulator;
-
-                mem.addItem(String.format("%4d", value), operand);
-
+                accumulator += value;
                 ProgramCounter.increment();
                 break;
             case Instructions.SUBM:
                 value = Integer.parseInt(mem.readItem(operand));
 
                 value -= accumulator;
-                mem.addItem(String.format("%4d", value), operand);
-
                 ProgramCounter.increment();
                 break;
             case Instructions.DIVM:
                 value = Integer.parseInt(mem.readItem(operand));
 
                 value /= accumulator;
-
-                mem.addItem(String.format("%4d", value), operand);
-
                 ProgramCounter.increment();
                 break;
             case Instructions.MODM:
                 value = Integer.parseInt(mem.readItem(operand));
 
                 value %= accumulator;
-
-                mem.addItem(String.format("%4d", value), operand);
-
                 ProgramCounter.increment();
                 break;
             case Instructions.MULM:
                 value = Integer.parseInt(mem.readItem(operand));
 
                 value *= accumulator;
-
-                mem.addItem(String.format("%4d", value), operand);
-
                 ProgramCounter.increment();
                 break;
             case Instructions.ADDI:

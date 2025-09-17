@@ -20,7 +20,7 @@ public class Simpletron {
                     instructionRegister = mem.readItem(ProgramCounter.getCounter());
 
                     opcode = Integer.parseInt(instructionRegister.substring(0, 2));
-                    operand = Integer.parseInt(instructionRegister.substring(2, 4));
+                    operand = Integer.parseInt(instructionRegister.substring(3, 4));
 
                     proc.execute(opcode, operand);
 
