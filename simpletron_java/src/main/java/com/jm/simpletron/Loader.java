@@ -13,7 +13,7 @@ public class Loader {
             String current;
 
             while ((current = bf.readLine()) != null) {
-                current = current.replaceAll(";", " ").trim();
+                current = current.replaceAll(";", " ").strip();
 
                 if (current.isEmpty()) continue;
                 String[] splittedStr = current.split(" ");
@@ -24,7 +24,7 @@ public class Loader {
                     break;
                 }
 
-                m.addItem(splittedStr[1].trim(), Integer.parseInt(splittedStr[0].trim()));
+                m.addItem(splittedStr[1].strip(), Integer.parseInt(splittedStr[0].trim()));
             }
         } catch (Exception e) {
             throw e;

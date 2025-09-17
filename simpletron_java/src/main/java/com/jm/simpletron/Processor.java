@@ -35,7 +35,7 @@ public class Processor {
                 ProgramCounter.increment();
                 break;
             case Instructions.WRITE:
-                System.out.println(mem.readItem(operand).trim());
+                System.out.println(mem.readItem(operand).strip());
 
                 ProgramCounter.increment();
                 break;
@@ -63,25 +63,25 @@ public class Processor {
             case Instructions.SUBM:
                 value = Integer.parseInt(mem.readItem(operand));
 
-                value -= accumulator;
+                accumulator -= value;
                 ProgramCounter.increment();
                 break;
             case Instructions.DIVM:
                 value = Integer.parseInt(mem.readItem(operand));
 
-                value /= accumulator;
+                accumulator /= value;
                 ProgramCounter.increment();
                 break;
             case Instructions.MODM:
                 value = Integer.parseInt(mem.readItem(operand));
 
-                value %= accumulator;
+                accumulator %= value;
                 ProgramCounter.increment();
                 break;
             case Instructions.MULM:
                 value = Integer.parseInt(mem.readItem(operand));
 
-                value *= accumulator;
+                accumulator *= value;
                 ProgramCounter.increment();
                 break;
             case Instructions.ADDI:
