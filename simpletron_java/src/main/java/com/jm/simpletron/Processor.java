@@ -28,6 +28,7 @@ public class Processor {
 
         switch (opcode) {
             case Instructions.READ:
+                System.out.print("Enter a value: ");
                 String instruction = scan.nextLine();
 
                 mem.addItem(String.format("%04d", Integer.parseInt(instruction)), operand);
@@ -35,7 +36,9 @@ public class Processor {
                 ProgramCounter.increment();
                 break;
             case Instructions.WRITE:
+                System.out.println();
                 System.out.println(mem.readItem(operand).strip());
+                System.out.println();
 
                 ProgramCounter.increment();
                 break;
@@ -128,7 +131,7 @@ public class Processor {
 
                 break;
             case Instructions.HALT:
-                System.out.println("\nProgram halted\n");
+                System.out.println("Program halted\n");
                 halted = true;
 
                 break;

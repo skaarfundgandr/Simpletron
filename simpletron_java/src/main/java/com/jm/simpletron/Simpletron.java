@@ -33,7 +33,7 @@ public class Simpletron {
                         
                         System.out.print("\033[H\033[2J");
                         System.out.flush();
-                        System.out.println("Press enter to execute");
+                        System.out.print("Press enter to execute");
                         scan.nextLine();
 
                         instructionRegister = mem.readItem(ProgramCounter.getCounter());
