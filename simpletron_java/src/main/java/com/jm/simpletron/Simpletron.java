@@ -12,6 +12,8 @@ public class Simpletron {
         Processor proc = new Processor();
         String instructionRegister = "0000";
 
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         if (args.length > 0) {
             try {
                 Loader.read(args[0]);
@@ -20,7 +22,7 @@ public class Simpletron {
                 mem = Memory.getInstance();
 
                 if (args.length > 1) {
-                    if (args[1].trim().equals("-s")) {
+                    if (args[1].strip().equals("-s")) {
                         sequential = true;
                     }
                 }
@@ -28,7 +30,9 @@ public class Simpletron {
                 if (sequential) {
                     while (true) {
                         Scanner scan = new Scanner(System.in);
-
+                        
+                        System.out.print("\033[H\033[2J");
+                        System.out.flush();
                         System.out.println("Press enter to execute");
                         scan.nextLine();
 
