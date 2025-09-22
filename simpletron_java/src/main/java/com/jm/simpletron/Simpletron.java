@@ -3,86 +3,96 @@ package com.jm.simpletron;
 import java.util.Scanner;
 
 public class Simpletron {
+    private static Memory mem;
+    private static Processor proc;
+    
     public static void main(String[] args) {
-        boolean sequential = false;
-        int opcode = 0, operand = 0;
-
-        Memory mem;
-
-        Processor proc = new Processor();
-        String instructionRegister = "0000";
-
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        clearScreen();
+        
         if (args.length > 0) {
             try {
-                Loader.read(args[0]);
-                System.out.println("Successfully loaded program\n");
-
-                mem = Memory.getInstance();
-
-                if (args.length > 1) {
-                    if (args[1].strip().equals("-s")) {
-                        sequential = true;
-                    }
-                }
-
+                loadProgram(args[0]);
+                boolean sequential = parseArguments(args);
+                
                 if (sequential) {
-                    while (true) {
-                        Scanner scan = new Scanner(System.in);
-                        
-                        System.out.print("\nPress enter to execute");
-                        scan.nextLine();
-                        System.out.print("\033[H\033[2J");
-                        System.out.flush();
-                        
-                        instructionRegister = mem.readItem(ProgramCounter.getCounter());
-
-                        opcode = Integer.parseInt(instructionRegister.substring(0, 2));
-                        operand = Integer.parseInt(instructionRegister.substring(3, 4));
-
-                        proc.execute(opcode, operand);
-
-                        if (proc.isHalted()) {
-                            break;
-                        }
-                        System.out.println("REGISTERS: ");
-                        System.out.println("accumulator:\t\t" + proc.getAccumulator());
-                        System.out.println("programCounter:\t\t" + String.format("   %02d", ProgramCounter.getCounter()));
-                        System.out.println("instructionRegister:\t" + String.format("%+05d", Integer.parseInt(instructionRegister)));
-                        System.out.println("operationCode:\t\t" + String.format("   %02d", opcode));
-                        System.out.println("operand:\t\t" + String.format("   %02d\n", operand));
-
-                        mem.dump();
-                    }
+                    runSequentialMode();
                 } else {
-                    while (true) {
-                        instructionRegister = mem.readItem(ProgramCounter.getCounter());
-
-                        opcode = Integer.parseInt(instructionRegister.substring(0, 2));
-                        operand = Integer.parseInt(instructionRegister.substring(3, 4));
-
-                        proc.execute(opcode, operand);
-
-                        if (proc.isHalted()) {
-                            break;
-                        }
-                    }
-                    
-                    System.out.println("REGISTERS: ");
-                    System.out.println("accumulator:\t\t" + proc.getAccumulator());
-                    System.out.println("programCounter:\t\t" + String.format("   %02d", ProgramCounter.getCounter()));
-                    System.out.println("instructionRegister:\t" + String.format("%+05d", Integer.parseInt(instructionRegister)));
-                    System.out.println("operationCode:\t\t" + String.format("   %02d", opcode));
-                    System.out.println("operand:\t\t" + String.format("   %02d\n", operand));
-
-                    mem.dump();
+                    runNormalMode();
                 }
             } catch (Exception e) {
                 System.err.println("Failed to load program!");
-
                 e.printStackTrace();
             }
         }
+    }
+    
+    private static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+    
+    private static void loadProgram(String filePath) throws Exception {
+        Loader.read(filePath);
+        System.out.println("Successfully loaded program\n");
+        mem = Memory.getInstance();
+        proc = new Processor();
+    }
+    
+    private static boolean parseArguments(String[] args) {
+        if (args.length > 1 && args[1].strip().equals("-s")) {
+            return true;
+        }
+        return false;
+    }
+    
+    private static void runSequentialMode() throws Exception {
+        try (Scanner scan = new Scanner(System.in)) {
+            while (true) {
+                printRegisters();
+                mem.dump();
+
+                System.out.print("\nPress enter to execute");
+                scan.nextLine();
+                clearScreen();
+                
+                if (executeNextInstruction()) {
+                    break;
+                }
+            }
+        }
+    }
+    
+    private static void runNormalMode() throws Exception {
+        while (true) {
+            if (executeNextInstruction()) {
+                break;
+            }
+        }
+        
+        printRegisters();
+        mem.dump();
+    }
+    
+    private static boolean executeNextInstruction() throws Exception {
+        String instructionRegister = mem.readItem(ProgramCounter.getCounter());
+        int opcode = Integer.parseInt(instructionRegister.substring(0, 2));
+        int operand = Integer.parseInt(instructionRegister.substring(3, 4));
+        
+        proc.execute(opcode, operand);
+        
+        return proc.isHalted();
+    }
+    
+    private static void printRegisters() {
+        String instructionRegister = mem.readItem(ProgramCounter.getCounter());
+        int opcode = Integer.parseInt(instructionRegister.substring(0, 2));
+        int operand = Integer.parseInt(instructionRegister.substring(2, 4));
+        
+        System.out.println("REGISTERS: ");
+        System.out.println("accumulator:\t\t" + proc.getAccumulator());
+        System.out.println("programCounter:\t\t" + String.format("   %02d", ProgramCounter.getCounter()));
+        System.out.println("instructionRegister:\t" + String.format("%+05d", Integer.parseInt(instructionRegister)));
+        System.out.println("operationCode:\t\t" + String.format("   %02d", opcode));
+        System.out.println("operand:\t\t" + String.format("   %02d", operand));
     }
 }
