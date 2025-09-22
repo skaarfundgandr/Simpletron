@@ -28,7 +28,7 @@ public class Processor {
 
         switch (opcode) {
             case Instructions.READ:
-                System.out.print("Enter a value: ");
+                System.out.print("? ");
                 String instruction = scan.nextLine();
 
                 mem.addItem(String.format("%04d", Integer.parseInt(instruction)), operand);

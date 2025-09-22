@@ -31,11 +31,11 @@ public class Simpletron {
                     while (true) {
                         Scanner scan = new Scanner(System.in);
                         
+                        System.out.print("\nPress enter to execute");
+                        scan.nextLine();
                         System.out.print("\033[H\033[2J");
                         System.out.flush();
-                        System.out.print("Press enter to execute");
-                        scan.nextLine();
-
+                        
                         instructionRegister = mem.readItem(ProgramCounter.getCounter());
 
                         opcode = Integer.parseInt(instructionRegister.substring(0, 2));
