@@ -26,7 +26,7 @@ public class Memory {
     }
 
     public void addItem(String data, int index) {
-        memStrings[index] = data;
+        memStrings[index] = String.format("%04d", Integer.parseInt(data));
     }
 
     public String readItem(int index) {

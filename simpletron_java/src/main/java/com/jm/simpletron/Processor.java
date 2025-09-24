@@ -2,19 +2,7 @@ package com.jm.simpletron;
 
 import java.util.Scanner;
 
-class Instructions {
-    public static final int 
-        READ = 10, WRITE = 11,
-        LOADM = 20, STORE = 21,
-        LOADI = 22, ADDM = 30,
-        SUBM = 31, DIVM = 32,
-        MODM = 33, MULM = 34,
-        ADDI = 35, SUBI = 36,
-        DIVI = 37, MODI = 38,
-        MULI = 39, JMP = 40,
-        JN = 41, JZ = 42,
-        HALT = 43;
-}
+
 
 public class Processor {
     int accumulator = 0;
@@ -36,9 +24,7 @@ public class Processor {
                 ProgramCounter.increment();
                 break;
             case Instructions.WRITE:
-                System.out.println();
                 System.out.println(mem.readItem(operand).strip());
-                System.out.println();
 
                 ProgramCounter.increment();
                 break;
@@ -137,7 +123,7 @@ public class Processor {
                 break;
             default:
                 // Unknown opcode
-                throw new Exception("Invalid opcode");
+                throw new Exception("Invalid opcode: " + opcode);
         }
     }
 

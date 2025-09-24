@@ -11,7 +11,12 @@ public class Simpletron {
         
         if (args.length > 0) {
             try {
-                loadProgram(args[0]);
+                if (args[0].endsWith(".sml")) {
+                    loadProgram(args[0]);
+                }
+                if (args[0].endsWith(".cml")) {
+                    compileProgram(args[0]);
+                }
                 boolean sequential = parseArguments(args);
                 
                 if (sequential) {
@@ -34,6 +39,13 @@ public class Simpletron {
     private static void loadProgram(String filePath) throws Exception {
         Loader.read(filePath);
         System.out.println("Successfully loaded program\n");
+        mem = Memory.getInstance();
+        proc = new Processor();
+    }
+
+    private static void compileProgram(String filePath) throws Exception {
+        LexicalParser.compile(filePath);
+        System.out.println("Successfully compiled program\n");
         mem = Memory.getInstance();
         proc = new Processor();
     }
@@ -76,7 +88,7 @@ public class Simpletron {
     private static boolean executeNextInstruction() throws Exception {
         String instructionRegister = mem.readItem(ProgramCounter.getCounter());
         int opcode = Integer.parseInt(instructionRegister.substring(0, 2));
-        int operand = Integer.parseInt(instructionRegister.substring(3, 4));
+        int operand = Integer.parseInt(instructionRegister.substring(2, 4));
         
         proc.execute(opcode, operand);
         
