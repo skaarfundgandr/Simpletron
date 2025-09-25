@@ -29,6 +29,10 @@ public class Memory {
         memStrings[index] = String.format("%04d", Integer.parseInt(data));
     }
 
+    public void addItem(int data, int index) {
+        memStrings[index] = String.format("%04d", data);
+    }
+
     public String readItem(int index) {
         return memStrings[index];
     }
@@ -39,6 +43,10 @@ public class Memory {
         } catch (RuntimeException e) {
             System.err.println("Failed to dump memory: " + e.getMessage());
         }
+    }
+
+    public int getMemorySize() {
+        return MEMORY_SIZE;
     }
 
     @Override

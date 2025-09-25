@@ -7,6 +7,7 @@ import java.io.FileReader;
 public class LexicalParser {
     public static void compile(String filePath) throws Exception {
         HashMap<String, Integer> instructions = new HashMap<>();
+        HashMap<String, Integer> variableMap = new HashMap<>();
 
         instructions.put("READ", Instructions.READ);
         instructions.put("WRITE", Instructions.WRITE);
@@ -33,7 +34,9 @@ public class LexicalParser {
             int currLine = 0;
 
             while ((current = bf.readLine()) != null) {
-                current = current.replaceAll(";", " ").strip();
+                int operand = 0;
+
+                current = current.replaceAll(";", " ").strip().toUpperCase();
 
                 if (current.isEmpty()) continue;
                 String[] splittedStr = current.strip().split(" ");
@@ -43,22 +46,35 @@ public class LexicalParser {
                 String instruction = splittedStr[0].strip().toUpperCase();
                 if (instructions.containsKey(instruction)) {
                     int opcode = instructions.get(instruction);
-                    int operand = 0;
 
                     if (opcode != Instructions.HALT && splittedStr.length < 2) {
                         throw new Exception("Missing operand for instruction: " + instruction);
                     }
 
                     if (opcode != Instructions.HALT) {
-                        operand = Integer.parseInt(splittedStr[1].strip());
+                        if (variableMap.containsKey(splittedStr[1].strip())) {
+                        operand = variableMap.get(splittedStr[1].strip());
+                        } else {
+                            operand = Integer.parseInt(splittedStr[1].strip());
+                        }
                     }
-
                     String machineCode = String.format("%02d%02d", opcode, operand);
                     m.addItem(machineCode, currLine);
+                    currLine++;
+                } else if (instruction.equals("VARIABLE") || instruction.equals("VAR")) {
+                    String varName = splittedStr[1].strip();
+
+                    if (varName.isEmpty()) {
+                        throw new Exception("Missing variable name for VAR instruction");
+                    }
+                    variableMap.put(varName, m.getMemorySize() - variableMap.size() - 1);
+                } else if (variableMap.containsKey(instruction)) {
+                    operand = Integer.parseInt(splittedStr[1].strip());
+
+                    m.addItem(operand, variableMap.get(instruction));
                 } else {
-                    m.addItem(instruction, currLine);
+                    throw new Exception("Unknown instruction: " + instruction);
                 }
-                currLine++;
             }
             
         } catch (Exception e) {
