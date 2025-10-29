@@ -123,6 +123,7 @@ public class Processor {
                 break;
             default:
                 // Unknown opcode
+                Memory.getInstance().dump();
                 throw new Exception("Invalid opcode: " + opcode);
         }
     }
