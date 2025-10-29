@@ -6,9 +6,6 @@ VARIABLE b
 VARIABLE c
 
 ; Initialize variables
-a 0
-b 0
-c 0
 
 ; Jump to start label
 start: READ a

@@ -1,5 +1,4 @@
-; Test assembly file with .sml extension
-; This should be compiled with -c flag
+; Computes the sum from 0 to 5
 
 VARIABLE sum
 VARIABLE counter
