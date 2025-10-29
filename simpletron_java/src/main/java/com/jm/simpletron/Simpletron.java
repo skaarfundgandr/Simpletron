@@ -31,6 +31,13 @@ public class Simpletron {
                 } else {
                     runNormalMode();
                 }
+
+                boolean dump = hasFlag(args, "-d");
+
+                if (dump && !sequential) {
+                    printRegisters();
+                    mem.dump();
+                }
             } catch (Exception e) {
                 System.err.println("Failed to load program!");
                 e.printStackTrace();
@@ -89,9 +96,6 @@ public class Simpletron {
                 break;
             }
         }
-        
-        printRegisters();
-        mem.dump();
     }
     
     private static boolean executeNextInstruction() throws Exception {
