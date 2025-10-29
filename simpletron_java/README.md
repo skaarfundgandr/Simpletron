@@ -2,7 +2,7 @@
 
 ## How to run
 
-Prerequisites: Java 8+ and Maven
+Prerequisites: Java 11+ and Maven
 
 1. Build the project:
 
