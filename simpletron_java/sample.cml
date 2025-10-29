@@ -1,0 +1,20 @@
+; Sample program - adds two numbers
+; Variables: a, b, c
+
+VARIABLE a
+VARIABLE b
+VARIABLE c
+
+; Initialize variables
+a 0
+b 0
+c 0
+
+; Jump to start label
+start: READ a
+       READ b
+       LOADM a
+       ADDM b
+       STORE c
+       WRITE c
+       HALT
