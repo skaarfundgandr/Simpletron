@@ -11,13 +11,20 @@ public class Simpletron {
         
         if (args.length > 0) {
             try {
-                if (args[0].endsWith(".sml")) {
-                    loadProgram(args[0]);
+                // Determine which loader to use based on file extension and flags
+                String filePath = args[0];
+                boolean forceCompile = hasFlag(args, "-c");
+                
+                if (forceCompile || filePath.endsWith(".cml")) {
+                    compileProgram(filePath);
+                } else if (filePath.endsWith(".sml")) {
+                    loadProgram(filePath);
+                } else {
+                    // Compiles by default
+                    compileProgram(filePath);
                 }
-                if (args[0].endsWith(".cml")) {
-                    compileProgram(args[0]);
-                }
-                boolean sequential = parseArguments(args);
+                
+                boolean sequential = hasFlag(args, "-s");
                 
                 if (sequential) {
                     runSequentialMode();
@@ -50,9 +57,11 @@ public class Simpletron {
         proc = new Processor();
     }
     
-    private static boolean parseArguments(String[] args) {
-        if (args.length > 1 && args[1].strip().equals("-s")) {
-            return true;
+    private static boolean hasFlag(String[] args, String flag) {
+        for (int i = 1; i < args.length; i++) {
+            if (args[i].strip().equals(flag)) {
+                return true;
+            }
         }
         return false;
     }
