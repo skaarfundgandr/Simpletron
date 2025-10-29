@@ -42,6 +42,13 @@ public class Simpletron {
                 System.err.println("Failed to load program!");
                 e.printStackTrace();
             }
+        } else {
+            System.out.println("No arguments provided.");
+            System.out.println("Arguments: <filename>.<extension> <flags>");
+            System.out.println("Flags:");
+            System.out.println("  -s    runs the program in sequential mode.");
+            System.out.println("  -c    force compiles the program.");
+            System.out.println("  -d    dumps memory and registers after execution.");
         }
     }
     
